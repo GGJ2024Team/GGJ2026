@@ -12,6 +12,9 @@ signal mask_change(new_mask)
 export(int) var accerelation: int = 40
 export(int) var max_speed: int = 100
 
+## 面具等外部施加的移速倍率，1.0 为无修正
+var speed_multiplier: float = 1.0
+
 var mov_direction: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
 
@@ -26,9 +29,11 @@ func _physics_process(_delta: float) -> void:
     
     
 func move() -> void:
-    mov_direction = mov_direction.normalized()
-    velocity += mov_direction * accerelation
-    velocity = velocity.clamped(max_speed)
+	mov_direction = mov_direction.normalized()
+	var acc = int(accerelation * speed_multiplier)
+	var cap = int(max_speed * speed_multiplier)
+	velocity += mov_direction * acc
+	velocity = velocity.clamped(cap)
 
 func take_damage(dam: int, dir: Vector2, force: int) -> void:
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:

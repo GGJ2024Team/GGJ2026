@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Audio/switch_mask.mp3" type="AudioStream" id=1]
+[ext_resource path="res://Assets/mask0.png" type="Texture" id=2]
+
+[node name="Mask" type="Node2D"]
+
+[node name="DurationTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+
+[node name="MaskSprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 2 )
