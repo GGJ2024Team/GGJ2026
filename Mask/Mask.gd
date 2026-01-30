@@ -21,36 +21,36 @@ var _duration_timer: Timer
 
 
 func _ready() -> void:
-	_mask_sprite = get_node("MaskSprite")
-	_audio_player = get_node("AudioStreamPlayer2D")
-	_duration_timer = get_node("DurationTimer")
-	_duration_timer.one_shot = true
-	var _discard = _duration_timer.connect("timeout", self, "_switch_to_next_mask")
-	_apply_mask_texture(_current_type)
-	_mask_sprite.visible = true
-	_mask_sprite.modulate.a = 1.0
-	_pick_next_mask()
-	_start_duration_timer()
-	_apply_mask_effect_to_player()
+    _mask_sprite = get_node("MaskSprite")
+    _audio_player = get_node("AudioStreamPlayer2D")
+    _duration_timer = get_node("DurationTimer")
+    _duration_timer.one_shot = true
+    var _discard = _duration_timer.connect("timeout", self, "_switch_to_next_mask")
+    _apply_mask_texture(_current_type)
+    _mask_sprite.visible = true
+    _mask_sprite.modulate.a = 1.0
+    _pick_next_mask()
+    _start_duration_timer()
+    _apply_mask_effect_to_player()
 
 
 func _start_duration_timer() -> void:
-	var cfg = GetMaskConfig(_current_type)
-	_duration_timer.wait_time = cfg["duration"]
-	_duration_timer.start()
+    var cfg = GetMaskConfig(_current_type)
+    _duration_timer.wait_time = cfg["duration"]
+    _duration_timer.start()
 
 
 func _get_player():
-	var p = get_parent()
-	return p if p is Character else null
+    var p = get_parent()
+    return p if p is Character else null
 
 
 func _apply_mask_effect_to_player() -> void:
-	var player = _get_player()
-	if not player:
-		return
-	var cfg = GetMaskConfig(_current_type)
-	player.speed_multiplier = cfg.get("speed_multiplier", 1.0)
+    var player = _get_player()
+    if not player:
+        return
+    var cfg = GetMaskConfig(_current_type)
+    player.speed_multiplier = cfg.get("speed_multiplier", 1.0)
 
 
 func _get_config_for_type(p_type: int) -> Dictionary:
@@ -61,20 +61,17 @@ func _pick_next_mask() -> void:
     if _mask_pool.size() == 0:
         _next_type = MaskType.NORMAL
         return
+    var index = randi() % _mask_pool.size()
     var candidates = _mask_pool.duplicate()
-    candidates.erase(_current_type)
-    if candidates.size() == 0:
-        _next_type = _current_type
-        return
-    _next_type = candidates.pick_random()
+    _next_type = candidates[index]
 
 
 func _switch_to_next_mask() -> void:
-	_current_type = _next_type
-	_pick_next_mask()
-	_start_duration_timer()
-	_apply_mask_effect_to_player()
-	_on_mask_switched(_current_type)
+    _current_type = _next_type
+    _pick_next_mask()
+    _start_duration_timer()
+    _apply_mask_effect_to_player()
+    _on_mask_switched(_current_type)
 
 
 func _apply_mask_texture(p_type: int) -> void:
@@ -118,28 +115,28 @@ func GetMaskConfig(p_type: int) -> Dictionary:
 
 
 ## 获取当前面具剩余佩戴时间（秒）
-func GetRemainingTime() -> float:
-	return _duration_timer.time_left if _duration_timer else 0.0
+func GetRemainingTime() -> int:
+    return int(_duration_timer.time_left) if _duration_timer else 0
 
 
 ## 获取当前面具的完整配置
 func GetCurrentMaskConfig() -> Dictionary:
-	var cfg = GetMaskConfig(_current_type)
-	cfg["type"] = _current_type
-	cfg["remaining_time"] = GetRemainingTime()
-	return cfg
+    var cfg = GetMaskConfig(_current_type)
+    cfg["type"] = _current_type
+    cfg["remaining_time"] = GetRemainingTime()
+    return cfg
 
 
 ## 获取当前面具简要信息
 func GetCurrentMask() -> Dictionary:
-	var cfg = GetCurrentMaskConfig()
-	return {
-		"type": cfg["type"],
-		"remaining_time": cfg["remaining_time"],
-		"duration": cfg["duration"],
-		"skill_name": cfg["skill_name"],
-		"name": cfg["name"]
-	}
+    var cfg = GetCurrentMaskConfig()
+    return {
+        "type": cfg["type"],
+        "remaining_time": cfg["remaining_time"],
+        "duration": cfg["duration"],
+        "skill_name": cfg["skill_name"],
+        "name": cfg["name"]
+    }
 
 
 ## 获取下一个面具简要信息
@@ -151,4 +148,4 @@ func GetNextMask() -> Dictionary:
 
 ## 当前面具类型应用技能效果（移速等已通过 _apply_mask_effect_to_player 作用于 Character）
 func ApplyMaskSkill(_delta: float) -> void:
-	pass
+    pass

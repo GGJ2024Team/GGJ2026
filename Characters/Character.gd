@@ -21,19 +21,17 @@ var velocity: Vector2 = Vector2.ZERO
 onready var state_machine: Node = get_node("FiniteStateMachine")
 onready var animated_sprite: AnimatedSprite = get_node("AnimatedSprite")
 
-
-
 func _physics_process(_delta: float) -> void:
     velocity = move_and_slide(velocity)
     velocity = lerp(velocity, Vector2.ZERO, FRICTION)
     
     
 func move() -> void:
-	mov_direction = mov_direction.normalized()
-	var acc = int(accerelation * speed_multiplier)
-	var cap = int(max_speed * speed_multiplier)
-	velocity += mov_direction * acc
-	velocity = velocity.clamped(cap)
+    mov_direction = mov_direction.normalized()
+    var acc = int(accerelation * speed_multiplier)
+    var cap = int(max_speed * speed_multiplier)
+    velocity += mov_direction * acc
+    velocity = velocity.clamped(cap)
 
 func take_damage(dam: int, dir: Vector2, force: int) -> void:
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:

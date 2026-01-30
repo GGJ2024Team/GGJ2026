@@ -5,12 +5,19 @@ const MIN_HEALTH: int = 23
 var max_hp: int = 4
 
 onready var player: KinematicBody2D = get_parent().get_node("Player")
+onready var mask = player.get_node("Mask")
 onready var health_bar: TextureProgress = get_node("HealthBar")
 onready var health_bar_tween: Tween = get_node("HealthBar/Tween")
+onready var countdown = $VBoxContainer/Countdown
 
 func _ready() -> void:
     max_hp = player.hp
     _update_health_bar(100)
+    var _duration_timer = Timer.new()
+    add_child(_duration_timer)
+    _duration_timer.connect("timeout", self, "_update_countdown")
+    _duration_timer.wait_time = 1.0
+    _duration_timer.start()
 
 func _update_health_bar(new_value: int) -> void:
     var __ = health_bar_tween.interpolate_property(health_bar, "value",
@@ -21,3 +28,8 @@ func _update_health_bar(new_value: int) -> void:
 func _on_Player_hp_changed(new_hp):
     var new_health: int = int(100 - MIN_HEALTH) *float(new_hp)/max_hp + MIN_HEALTH
     _update_health_bar(new_health)
+
+func _update_countdown():
+    print(countdown.text)
+    countdown.text = String(mask.GetRemainingTime())
+
