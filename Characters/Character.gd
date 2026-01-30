@@ -4,7 +4,10 @@ class_name Character, "res://art/v1.1 dungeon crawler 16X16 pixel pack/heroes/kn
 const FRICTION: float = 0.15
 
 export(int) var hp: int = 2 setget set_hp
+export(String) var mask: String = "None" setget set_mask
+
 signal hp_changed(new_hp)
+signal mask_change(new_mask)
 
 export(int) var accerelation: int = 40
 export(int) var max_speed: int = 100
@@ -46,3 +49,7 @@ func take_damage(dam: int, dir: Vector2, force: int) -> void:
 func set_hp(new_hp: int) -> void:
     hp = new_hp
     emit_signal("hp_changed", new_hp)
+    
+func set_mask(new_mask: String) -> void:
+    mask = new_mask
+    emit_signal("mask_change", new_mask)
