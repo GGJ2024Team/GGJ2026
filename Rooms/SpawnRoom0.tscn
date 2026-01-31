@@ -33,10 +33,16 @@ position = Vector2( 272, 96 )
 on_floor = true
 
 [node name="PoisonGasArea" parent="." index="8" instance=ExtResource( 5 )]
-position = Vector2( 154, -3 )
+position = Vector2( 153, -48 )
 
-[node name="RoomMonsters" parent="." index="9" instance=ExtResource( 4 )]
+[node name="PoisonGasArea2" parent="." index="9" instance=ExtResource( 5 )]
+position = Vector2( 154, -18 )
+
+[node name="PoisonGasArea3" parent="." index="10" instance=ExtResource( 5 )]
+position = Vector2( 155, 12 )
+
+[node name="RoomMonsters" parent="." index="11" instance=ExtResource( 4 )]
 position = Vector2( -64, -240 )
 
-[node name="EndRoom" parent="." index="10" instance=ExtResource( 6 )]
+[node name="EndRoom" parent="." index="12" instance=ExtResource( 6 )]
 position = Vector2( -128, -368 )
