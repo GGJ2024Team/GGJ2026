@@ -25,6 +25,7 @@ func _spawn_rooms():
             room = SPAWN_ROOMS[randi()%SPAWN_ROOMS.size()].instance()
             player.position = room.get_node("PlayerSpawnPos").position
         else:
+            return
             if i == num_levels - 1:
                 room = END_ROOMS[randi() % END_ROOMS.size()].instance()
             else:
