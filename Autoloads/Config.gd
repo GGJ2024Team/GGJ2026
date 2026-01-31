@@ -7,7 +7,7 @@ var mask_icon_path = {
 }
 
 ## 面具图片基础路径
-const MASK_TEXTURE_BASE: String = "res://Assets/mask"
+const MASK_TEXTURE_BASE: String = "res://Assets/mask0_pixel_art.png"
 
 ## 面具配置（speed_multiplier 影响玩家移速，1.0 为基准）
 const MASK_CONFIG: Dictionary = {
