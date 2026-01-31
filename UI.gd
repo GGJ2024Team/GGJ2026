@@ -9,6 +9,8 @@ onready var mask = player.get_node("Mask")
 onready var health_bar: TextureProgress = get_node("HealthBar")
 onready var health_bar_tween: Tween = get_node("HealthBar/Tween")
 onready var countdown = $VBoxContainer/Countdown
+onready var maskSprite = $VBoxContainer/MaskSprite
+onready var maskName = $VBoxContainer/MaskName
 
 func _ready() -> void:
     max_hp = player.hp
@@ -30,6 +32,14 @@ func _on_Player_hp_changed(new_hp):
     _update_health_bar(new_health)
 
 func _update_countdown():
-    print(countdown.text)
-    countdown.text = String(mask.GetRemainingTime())
+    if mask:
+        var p_type = mask.GetNextMaskType()
+        var path = get_node("/root/Config").GetMaskTexturePath(p_type)
+        var tex = load(path) as Texture
+        if tex:
+            maskSprite.texture = tex
+        var name = get_node("/root/Config").GetMaskConfig(p_type).name
+        maskName.text = name
+        print(name)
+        countdown.text = String(mask.GetRemainingTime())
 

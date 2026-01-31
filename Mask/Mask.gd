@@ -2,13 +2,13 @@ extends Node2D
 
 ## 面具类型
 enum MaskType {
+    NORMAL    ## 普通面具
     GAS,      ## 防毒面具
     STEALTH,  ## 潜行面具
-    NORMAL    ## 普通面具
 }
 
 ## 当前佩戴的面具类型
-var _current_type: int = MaskType.NORMAL
+var _current_type: int = MaskType.GAS
 ## 下一个将切换到的面具类型
 var _next_type: int = MaskType.GAS
 
@@ -76,6 +76,7 @@ func _switch_to_next_mask() -> void:
 
 func _apply_mask_texture(p_type: int) -> void:
     var path = get_node("/root/Config").GetMaskTexturePath(p_type)
+    print(path)
     var tex = load(path) as Texture
     if tex:
         _mask_sprite.texture = tex
@@ -86,20 +87,10 @@ var _switch_target_type: int = -1
 ## 面具切换时的回调
 func _on_mask_switched(p_new_type: int) -> void:
     _switch_target_type = p_new_type
-    if not _mask_sprite or not _audio_player:
-        _apply_mask_texture(p_new_type)
-        _mask_sprite.visible = true
-        return
-    var stream = _audio_player.stream
-    var dur: float = stream.get_length() if stream else 0.5
-    var half = dur * 0.5
+    _apply_mask_texture(p_new_type)
+    _mask_sprite.visible = true
     _audio_player.stream.loop = false
     _audio_player.play()
-    # var tween = create_tween()
-    # tween.tween_property(_mask_sprite, "modulate:a", 0.0, half)
-    # tween.tween_callback(self._on_tween_mid)
-    # tween.tween_property(_mask_sprite, "modulate:a", 1.0, half)
-    # tween.tween_callback(self._on_tween_end)
 
 
 func _on_tween_mid() -> void:
@@ -145,6 +136,10 @@ func GetNextMask() -> Dictionary:
     var cfg = GetMaskConfig(_next_type)
     cfg["type"] = _next_type
     return cfg
+
+## 获取下一个面具类型
+func GetNextMaskType() -> int:
+    return _next_type
 
 
 ## 当前面具类型应用技能效果（移速等已通过 _apply_mask_effect_to_player 作用于 Character）

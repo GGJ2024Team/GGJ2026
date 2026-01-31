@@ -36,7 +36,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Character": "res://art/v1.1 dungeon crawler 16X16 pixel pack/heroes/knight/knight_idle_anim_f0.png",
-"Enemy": "",
+"Enemy": "res://art/v1.1 dungeon crawler 16X16 pixel pack/enemies/goblin/goblin_idle_anim_f0.png",
 "FiniteStateMachine": "",
 "Hitbox": "",
 "Weapon": ""
