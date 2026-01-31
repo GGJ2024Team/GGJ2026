@@ -66,27 +66,19 @@ func on_timeout_take_poision_damage(timer):
     if _is_wearing_gas_mask():
         timer.queue_free()
         return
-    take_damage(1, Vector2.ZERO, 0, "poision", true)
+    take_damage(1, Vector2.ZERO, 0, "normal")
 
 func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "normal", from_poison_timer: bool = false, attacker = null) -> void:
     if damage_type == "poision":
         if _is_wearing_gas_mask():
             return
-        if not from_poison_timer and is_task_poision_damage():
+        if is_task_poision_damage():
             var timer = Timer.new()
             timer.wait_time = 1
             timer.one_shot = false
             add_child(timer)
-            var _discard = timer.connect("timeout", self, "on_timeout_take_poision_damage", [timer])
+            timer.connect("timeout", self, "on_timeout_take_poision_damage", [timer])
             timer.start()
-        self.hp -= dam
-        if name == "Player":
-            SavedData.hp = hp
-            if hp == 0:
-                SceneTransistor.start_transition_to("res://Game.tscn")
-                SavedData.reset_data()
-        if hp <= 0:
-            state_machine.set_state(state_machine.states.dead)
         return
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:
         self.hp -= dam
