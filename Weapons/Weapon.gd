@@ -14,6 +14,8 @@ onready var charge_particles: Particles2D = get_node("Node2D/Sprite/ChargePartic
 
 onready var player_detector: Area2D = get_node("PlayerDetector")
 onready var tween: Tween = get_node("Tween")
+onready var hit_sound: AudioStreamPlayer2D = get_node("HitSound")
+onready var hit2_sound: AudioStreamPlayer2D = get_node("Hit2Sound")
 #onready var cool_down_timer: Timer = get_node("CoolDownTimer")
 #onready var ui: CanvasLayer = get_node("UI")
 #onready var ability_icon: TextureProgress = ui.get_node("AbilityIcon")
@@ -41,8 +43,14 @@ func get_input() -> void:
     elif Input.is_action_just_released("ui_attack"):
         if animation_player.is_playing() and animation_player.current_animation == "charge":
             animation_player.play("attack")
+            if hit2_sound:
+                hit2_sound.stream.loop = false
+                hit2_sound.play()
         elif charge_particles.emitting:
             animation_player.play("strong_attack")
+            if hit_sound:
+                hit_sound.stream.loop = false
+                hit_sound.play()
 #	elif Input.is_action_just_pressed("ui_active_ability") and animation_player.has_animation("active_ability") and not is_busy() and can_active_ability:
 #		can_active_ability = false
 ##		cool_down_timer.start()

@@ -25,6 +25,8 @@ var velocity: Vector2 = Vector2.ZERO
 
 onready var state_machine: Node = get_node("FiniteStateMachine")
 onready var animated_sprite: AnimatedSprite = get_node("AnimatedSprite")
+onready var hurt_sound: AudioStreamPlayer2D = get_node_or_null("HurtSound")
+onready var game_over_sound: AudioStreamPlayer2D = get_node_or_null("GameOverSound")
 
 func _physics_process(_delta: float) -> void:
     velocity = move_and_slide(velocity)
@@ -81,6 +83,9 @@ func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "norm
             timer.start()
         return
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:
+        if hurt_sound:
+            hurt_sound.stream.loop = false 
+            hurt_sound.play()
         self.hp -= dam
         if name == "Player":
             SavedData.hp = hp

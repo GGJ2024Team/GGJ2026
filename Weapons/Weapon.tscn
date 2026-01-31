@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Weapons/Weapon.gd" type="Script" id=1]
 [ext_resource path="res://Characters/Hitbox.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Audio/hit.mp3" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Audio/hit2.mp3" type="AudioStream" id=4]
 
 [sub_resource type="ParticlesMaterial" id=3]
 flag_disable_z = true
@@ -49,6 +51,12 @@ collision_mask = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Hit2Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
 
 [connection signal="body_entered" from="PlayerDetector" to="." method="_on_PlayerDetector_body_entered"]
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
