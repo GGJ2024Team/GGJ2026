@@ -61,9 +61,14 @@ func _pick_next_mask() -> void:
     if _mask_pool.size() == 0:
         _next_type = MaskType.NORMAL
         return
-    var index = randi() % _mask_pool.size()
-    var candidates = _mask_pool.duplicate()
-    _next_type = candidates[index]
+    var candidates = []
+    for t in _mask_pool:
+        if t != _current_type:
+            candidates.append(t)
+    if candidates.size() > 0:
+        _next_type = candidates[randi() % candidates.size()]
+    else:
+        _next_type = _current_type
 
 
 func _switch_to_next_mask() -> void:

@@ -5,13 +5,15 @@ var current_weapon: Node2D
 onready var weapons: Node2D = get_node("Weapons")
 onready var curmask = $Mask
 
+const MASK_OSCILLATE_AMP: float = 0.4
+const MASK_OSCILLATE_SPEED: float = 5.0
+
 func _ready():
     _restore_previous_state()
 #	current_weapon = weapons.get_child(0)
     
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
     var mouse_direction: Vector2 = (get_global_mouse_position() - global_position).normalized()
-    
     if mouse_direction.x > 0 and animated_sprite.flip_h:
         animated_sprite.flip_h = false
         curmask.get_node("MaskSprite").flip_h = false
@@ -19,6 +21,15 @@ func _process(_delta: float) -> void:
         animated_sprite.flip_h = true
         curmask.get_node("MaskSprite").flip_h = true
     current_weapon.move(mouse_direction)
+    _update_mask_oscillate(delta)
+
+
+func _update_mask_oscillate(_delta: float) -> void:
+    if not curmask:
+        return
+    var t = OS.get_ticks_msec() * 0.001 * MASK_OSCILLATE_SPEED
+    var offset = Vector2(sin(t) * MASK_OSCILLATE_AMP, cos(t * 1.1) * MASK_OSCILLATE_AMP)
+    curmask.position = offset
     
 func get_input() -> void:
     mov_direction = Vector2.ZERO

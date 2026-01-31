@@ -38,24 +38,40 @@ func move() -> void:
 func is_task_poision_damage():
     return task_poision_damage
 
+
+func _is_wearing_gas_mask() -> bool:
+    var mask_node = get_node_or_null("Mask")
+    if not mask_node or not mask_node.has_method("GetCurrentMask"):
+        return false
+    var info = mask_node.GetCurrentMask()
+    return info.get("type", 2) == 0
+
 func on_timeout_take_poision_damage(timer):
     if not is_in_poision_area:
         timer.queue_free()
-    self.take_damage(1, Vector2.ZERO, 0)
+        return
+    if _is_wearing_gas_mask():
+        timer.queue_free()
+        return
+    take_damage(1, Vector2.ZERO, 0, "poision", true)
 
-func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "normal") -> void:
+func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "normal", from_poison_timer: bool = false) -> void:
     if damage_type == "poision":
-        if is_task_poision_damage():
+        if _is_wearing_gas_mask():
+            return
+        if from_poison_timer:
+            pass
+        elif is_task_poision_damage():
             var timer = Timer.new()
             timer.wait_time = 1
             timer.one_shot = false
             add_child(timer)
-            timer.connect("timeout", self, "on_timeout_take_poision_damage", [timer])
+            var _discard = timer.connect("timeout", self, "on_timeout_take_poision_damage", [timer])
             timer.start()
             return
-        return
+        else:
+            return
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:
-#		_spawn_hit_effect()
         self.hp -= dam
         if name == "Player":
             SavedData.hp = hp
@@ -68,11 +84,11 @@ func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "norm
         else:
             state_machine.set_state(state_machine.states.dead)
             velocity += dir * force * 2
-            
+
 func set_hp(new_hp: int) -> void:
     hp = new_hp
     emit_signal("hp_changed", new_hp)
-    
+
 func set_mask(new_mask: String) -> void:
     mask = new_mask
     emit_signal("mask_change", new_mask)
