@@ -1,6 +1,13 @@
 extends Control
 
 func _ready() -> void:
-    yield(get_tree().create_timer(3.0), "timeout")
+    pass
+
+
+func _on_NewGame_pressed():
     SavedData.reset_data()
-    get_tree().change_scene("res://Game.tscn")
+    SceneTransistor.start_transition_to("res://Game.tscn")
+
+
+func _on_Quit_pressed():
+    get_tree().quit()
