@@ -5,6 +5,7 @@ const FRICTION: float = 0.15
 
 export(int) var hp: int = 2 setget set_hp
 export(String) var mask: String = "None" setget set_mask
+export(bool) var task_poision_damage:bool = false
 
 signal hp_changed(new_hp)
 signal mask_change(new_mask)
@@ -15,6 +16,7 @@ export(int) var max_speed: int = 100
 ## 面具等外部施加的移速倍率，1.0 为无修正
 var speed_multiplier: float = 1.0
 
+var is_in_poision_area: bool = false
 var mov_direction: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
 
@@ -33,7 +35,25 @@ func move() -> void:
     velocity += mov_direction * acc
     velocity = velocity.clamped(cap)
 
-func take_damage(dam: int, dir: Vector2, force: int) -> void:
+func is_task_poision_damage():
+    return task_poision_damage
+
+func on_timeout_take_poision_damage(timer):
+    if not is_in_poision_area:
+        timer.queue_free()
+    self.take_damage(1, Vector2.ZERO, 0)
+
+func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "normal") -> void:
+    if damage_type == "poision":
+        if is_task_poision_damage():
+            var timer = Timer.new()
+            timer.wait_time = 1
+            timer.one_shot = false
+            add_child(timer)
+            timer.connect("timeout", self, "on_timeout_take_poision_damage", [timer])
+            timer.start()
+            return
+        return
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:
 #		_spawn_hit_effect()
         self.hp -= dam
