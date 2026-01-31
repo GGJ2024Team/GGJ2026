@@ -53,10 +53,18 @@ func _spawn_enemies() -> void:
         call_deferred("add_child", spawn_explosion)
         
 func _on_PlayerDetector_body_entered(_body: KinematicBody2D) -> void:
+    print("_on_PlayerDetector_body_entered ")
     player_detector.queue_free()
     if num_enemies > 0:
+        print(1)
         _close_entrance()
         _spawn_enemies()
     else:
+        print(2)
         _close_entrance()
         _open_doors()
+
+
+func _on_OpenDoor_body_entered(body):
+    print(body)
+    _open_doors()

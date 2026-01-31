@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Rooms/Room0.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/gem.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
 
 [node name="RoomMonsters" instance=ExtResource( 1 )]
 
@@ -27,3 +30,17 @@ position = Vector2( 186, 116 )
 
 [node name="Position2D10" type="Position2D" parent="EnemyPositions" index="9"]
 position = Vector2( 202, 125 )
+
+[node name="OpenDoor" type="Area2D" parent="." index="6"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OpenDoor" index="0"]
+position = Vector2( 293, 92 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="OpenDoor" index="1"]
+position = Vector2( 293, 93 )
+texture = ExtResource( 2 )
+
+[connection signal="body_entered" from="OpenDoor" to="." method="_on_OpenDoor_body_entered"]
