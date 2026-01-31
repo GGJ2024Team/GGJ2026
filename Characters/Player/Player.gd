@@ -3,6 +3,7 @@ extends Character
 enum {UP, DOWN}
 var current_weapon: Node2D
 onready var weapons: Node2D = get_node("Weapons")
+onready var curmask = $Mask
 
 func _ready():
     _restore_previous_state()
@@ -13,8 +14,10 @@ func _process(_delta: float) -> void:
     
     if mouse_direction.x > 0 and animated_sprite.flip_h:
         animated_sprite.flip_h = false
+        curmask.get_node("MaskSprite").flip_h = false
     elif mouse_direction.x < 0 and not animated_sprite.flip_h:
         animated_sprite.flip_h = true
+        curmask.get_node("MaskSprite").flip_h = true
     current_weapon.move(mouse_direction)
     
 func get_input() -> void:
