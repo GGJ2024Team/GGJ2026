@@ -49,7 +49,7 @@ func _start_duration_timer() -> void:
 
 func _get_player():
     var p = get_parent()
-    return p if p is Character else null
+    return p if (p and p.has_method("take_damage") and p.name == "Player") else null
 
 
 func _apply_mask_effect_to_player() -> void:
