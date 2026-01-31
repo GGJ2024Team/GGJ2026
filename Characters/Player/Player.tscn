@@ -267,6 +267,7 @@ position = Vector2( -2, 0 )
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 4 )
+mask = "None"
 task_poision_damage = true
 
 [node name="FiniteStateMachine" parent="." index="0"]
@@ -298,3 +299,6 @@ current = true
 
 [node name="Mask" parent="." index="6" instance=ExtResource( 7 )]
 position = Vector2( 1, -3 )
+
+[connection signal="mask_change" from="." to="." method="_on_Player_mask_change"]
+[connection signal="mask_changed" from="Mask" to="." method="_on_Mask_mask_changed"]

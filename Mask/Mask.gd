@@ -8,6 +8,8 @@ enum MaskType {
     POWER
 }
 
+signal mask_changed(new_type)
+
 ## 当前佩戴的面具类型
 var _current_type: int = MaskType.GAS
 ## 下一个将切换到的面具类型
@@ -103,7 +105,6 @@ func _switch_to_next_mask() -> void:
 
 func _apply_mask_texture(p_type: int) -> void:
     var path = get_node("/root/Config").GetMaskTexturePath(p_type)
-    print(path)
     var tex = load(path) as Texture
     if tex:
         _mask_sprite.texture = tex
@@ -118,6 +119,7 @@ func _on_mask_switched(p_new_type: int) -> void:
     _mask_sprite.visible = true
     _audio_player.stream.loop = false
     _audio_player.play()
+    emit_signal("mask_changed", p_new_type)
 
 
 func _on_tween_mid() -> void:
@@ -178,3 +180,6 @@ func OnPlayerKill() -> void:
 ## 当前面具类型应用技能效果（移速等已通过 _apply_mask_effect_to_player 作用于 Character）
 func ApplyMaskSkill(_delta: float) -> void:
     pass
+
+func set_mask(new_mask: String) -> void:
+    emit_signal("mask_change", new_mask)

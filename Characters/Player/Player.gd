@@ -10,7 +10,6 @@ const MASK_OSCILLATE_SPEED: float = 5.0
 
 func _ready():
     _restore_previous_state()
-#	current_weapon = weapons.get_child(0)
     
 func _process(delta: float) -> void:
     var mouse_direction: Vector2 = (get_global_mouse_position() - global_position).normalized()
@@ -88,7 +87,6 @@ func switch_weapon(direction: int):
     SavedData.equipped_weapon_index = index
     
 func pick_up_weapon(weapon: Node2D):
-    print("pick up")
     SavedData.weapons.append(weapon.duplicate())
     SavedData.equipped_weapon_index = weapons.get_child_count()
     weapon.get_parent().call_deferred("remove_child", weapon)
@@ -130,3 +128,8 @@ func _restore_previous_state() -> void:
     current_weapon.show()
     
 #	emit_signal("weapon_switched", weapons.get_child_count() - 1, SavedData.equipped_weapon_index)
+
+func _on_Mask_mask_changed(new_type):
+    print("_on_Mask_mask_changed", is_in_poision_area, _is_wearing_gas_mask())
+    if is_in_poision_area and not _is_wearing_gas_mask():
+        self.take_damage(1, Vector2.ZERO, 0, 'poision')

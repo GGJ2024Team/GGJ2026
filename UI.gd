@@ -40,6 +40,5 @@ func _update_countdown():
             maskSprite.texture = tex
         var name = get_node("/root/Config").GetMaskConfig(p_type).name
         maskName.text = name
-        print(name)
         countdown.text = String(mask.GetRemainingTime())
 
