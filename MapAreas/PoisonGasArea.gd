@@ -3,15 +3,11 @@ export(NodePath) var collision_shape_path
 
 onready var collision_shape: CollisionShape2D = get_node(collision_shape_path)
 onready var anime = $AnimatedSprite
+onready var area = $Area2D
 
 
-# Declare member variables here. Examples:
-# var a: int = 2
-# var b: String = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+    area.collision_mask = 2
     anime.play()
 
 
@@ -20,8 +16,8 @@ func _ready() -> void:
 #    pass
 
 
-func _on_Area2D_area_entered(area: Area2D) -> void:
-    pass # Replace with function body.
+func _on_Area2D_area_entered(_area: Area2D) -> void:
+    pass
 
 
 func _on_Area2D_body_entered(body: Node) -> void:

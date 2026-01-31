@@ -11,9 +11,9 @@ enum MaskType {
 signal mask_changed(new_type)
 
 ## 当前佩戴的面具类型
-var _current_type: int = MaskType.GAS
+var _current_type: int = MaskType.NORMAL
 ## 下一个将切换到的面具类型
-var _next_type: int = MaskType.GAS
+var _next_type: int = MaskType.NORMAL
 
 ## “下一个面具”的候选池（不含 POWER，POWER 由第 10 次切换单独触发）
 var _mask_pool: Array = [MaskType.GAS, MaskType.STEALTH, MaskType.NORMAL]

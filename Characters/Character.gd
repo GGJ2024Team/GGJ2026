@@ -79,6 +79,15 @@ func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "norm
             add_child(timer)
             var _discard = timer.connect("timeout", self, "on_timeout_take_poision_damage", [timer])
             timer.start()
+        self.hp -= dam
+        if name == "Player":
+            SavedData.hp = hp
+            if hp == 0:
+                SceneTransistor.start_transition_to("res://Game.tscn")
+                SavedData.reset_data()
+        if hp <= 0:
+            state_machine.set_state(state_machine.states.dead)
+        return
     if state_machine.state != state_machine.states.hurt and state_machine.state != state_machine.states.dead:
         self.hp -= dam
         if name == "Player":
