@@ -64,7 +64,6 @@ script = ExtResource( 4 )
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 194, 248 )
 hp = 4
-mask = "None"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
