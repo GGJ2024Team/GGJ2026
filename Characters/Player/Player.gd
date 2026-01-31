@@ -43,15 +43,16 @@ func on_kill() -> void:
 
 func get_input() -> void:
     mov_direction = Vector2.ZERO
+    var is_stealth = _is_wearing_stealth_mask()
     if Input.is_action_pressed("ui_down"):
-        mov_direction += Vector2.DOWN
+        mov_direction += Vector2.UP if is_stealth else Vector2.DOWN
     if Input.is_action_pressed("ui_left"):
-        mov_direction += Vector2.LEFT
+        mov_direction += Vector2.RIGHT if is_stealth else Vector2.LEFT
     if Input.is_action_pressed("ui_right"):
-        mov_direction += Vector2.RIGHT
+        mov_direction += Vector2.LEFT if is_stealth else Vector2.RIGHT
     if Input.is_action_pressed("ui_up"):
-        mov_direction += Vector2.UP
-    var can_attack = not _is_wearing_stealth_mask()
+        mov_direction += Vector2.DOWN if is_stealth else Vector2.UP
+    var can_attack = not is_stealth
     if can_attack and not current_weapon.is_busy():
         if Input.is_action_just_released("ui_previous_weapon"):
             switch_weapon(UP)

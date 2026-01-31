@@ -26,13 +26,14 @@ const MASK_CONFIG: Dictionary = {
         "duration": 5.0,
         "speed_multiplier": 0.7
     },
-    2: {  # STEALTH：敌人看不见、80% 透明度、降低移速、无法攻击
+    2: {  # STEALTH：敌人看不见、80% 透明度、降低移速、无法攻击、方向反转
         "name": "stealthMask",
         "skill_name": "潜行",
-        "skill_effect": "敌人看不见，整体 80% 透明，降低移速，潜行期间无法攻击",
+        "skill_effect": "敌人看不见，整体 80% 透明，降低移速，潜行期间无法攻击，方向键反转",
         "duration": 5.0,
         "speed_multiplier": 0.5,
-        "stealth_opacity": 0.5
+        "stealth_opacity": 0.5,
+        "reverse_controls": true
     },
     3: {  # POWER
         "name": "powerMask",

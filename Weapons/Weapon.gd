@@ -20,29 +20,29 @@ onready var tween: Tween = get_node("Tween")
 
 
 func _ready() -> void:
-	if not on_floor:
-		player_detector.set_collision_mask_bit(0, false)
-		player_detector.set_collision_mask_bit(1, false)
-	_apply_attack_speed()
+    if not on_floor:
+        player_detector.set_collision_mask_bit(0, false)
+        player_detector.set_collision_mask_bit(1, false)
+    _apply_attack_speed()
 
 
 func _apply_attack_speed() -> void:
-	var player = get_parent().get_parent() if get_parent() and get_parent().get_parent() else null
-	if player and player.get("attack_speed_multiplier") != null:
-		animation_player.playback_speed = player.attack_speed_multiplier
-	else:
-		animation_player.playback_speed = 1.0
+    var player = get_parent().get_parent() if get_parent() and get_parent().get_parent() else null
+    if player and player.get("attack_speed_multiplier") != null:
+        animation_player.playback_speed = player.attack_speed_multiplier
+    else:
+        animation_player.playback_speed = 1.0
 
 
 func get_input() -> void:
-	_apply_attack_speed()
-	if Input.is_action_just_pressed("ui_attack") and not animation_player.is_playing():
-		animation_player.play("charge")
-	elif Input.is_action_just_released("ui_attack"):
-		if animation_player.is_playing() and animation_player.current_animation == "charge":
-			animation_player.play("attack")
-		elif charge_particles.emitting:
-			animation_player.play("strong_attack")
+    _apply_attack_speed()
+    if Input.is_action_just_pressed("ui_attack") and not animation_player.is_playing():
+        animation_player.play("charge")
+    elif Input.is_action_just_released("ui_attack"):
+        if animation_player.is_playing() and animation_player.current_animation == "charge":
+            animation_player.play("attack")
+        elif charge_particles.emitting:
+            animation_player.play("strong_attack")
 #	elif Input.is_action_just_pressed("ui_active_ability") and animation_player.has_animation("active_ability") and not is_busy() and can_active_ability:
 #		can_active_ability = false
 ##		cool_down_timer.start()
