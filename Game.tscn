@@ -33,23 +33,27 @@ margin_left = -58.0
 margin_bottom = 68.0
 
 [node name="MaskSprite" type="TextureRect" parent="UI/VBoxContainer"]
-margin_right = 58.0
+margin_right = 80.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
 texture = ExtResource( 1 )
 expand = true
+stretch_mode = 6
 
 [node name="MaskName" type="Label" parent="UI/VBoxContainer"]
 margin_top = 54.0
-margin_right = 58.0
-margin_bottom = 68.0
+margin_right = 80.0
+margin_bottom = 74.0
+rect_min_size = Vector2( 80, 20 )
 align = 1
 valign = 1
+autowrap = true
+clip_text = true
 
 [node name="Countdown" type="Label" parent="UI/VBoxContainer"]
-margin_top = 72.0
-margin_right = 58.0
-margin_bottom = 86.0
+margin_top = 78.0
+margin_right = 80.0
+margin_bottom = 92.0
 text = "00:00"
 align = 1
 valign = 1
