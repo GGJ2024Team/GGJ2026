@@ -31,6 +31,17 @@ func _update_mask_oscillate(_delta: float) -> void:
     var offset = Vector2(sin(t) * MASK_OSCILLATE_AMP, cos(t * 1.1) * MASK_OSCILLATE_AMP)
     curmask.position = offset
     
+func _is_wearing_stealth_mask() -> bool:
+    if not curmask or not curmask.has_method("GetCurrentMask"):
+        return false
+    return curmask.GetCurrentMask().get("type", 2) == 1
+
+
+func on_kill() -> void:
+    if curmask and curmask.has_method("OnPlayerKill"):
+        curmask.OnPlayerKill()
+
+
 func get_input() -> void:
     mov_direction = Vector2.ZERO
     if Input.is_action_pressed("ui_down"):
@@ -41,8 +52,8 @@ func get_input() -> void:
         mov_direction += Vector2.RIGHT
     if Input.is_action_pressed("ui_up"):
         mov_direction += Vector2.UP
-    
-    if not current_weapon.is_busy():
+    var can_attack = not _is_wearing_stealth_mask()
+    if can_attack and not current_weapon.is_busy():
         if Input.is_action_just_released("ui_previous_weapon"):
             switch_weapon(UP)
         elif Input.is_action_just_released("ui_next_weapon"):
@@ -50,7 +61,8 @@ func get_input() -> void:
         elif Input.is_action_just_pressed("ui_throw"):
             if current_weapon.get_index() != 0:
                 _drop_weapon()
-    current_weapon.get_input()
+    if can_attack:
+        current_weapon.get_input()
 
 func switch_camera() -> void:
     var main_scene_camera: Camera2D = get_parent().get_node("Camera2D")

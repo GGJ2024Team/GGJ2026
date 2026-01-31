@@ -15,6 +15,10 @@ export(int) var max_speed: int = 100
 
 ## 面具等外部施加的移速倍率，1.0 为无修正
 var speed_multiplier: float = 1.0
+## 力量面具等施加的伤害倍率，1.0 为无修正
+var damage_multiplier: float = 1.0
+## 力量面具等施加的攻速倍率，1.0 为无修正
+var attack_speed_multiplier: float = 1.0
 
 var is_in_poision_area: bool = false
 var mov_direction: Vector2 = Vector2.ZERO
@@ -46,6 +50,16 @@ func _is_wearing_gas_mask() -> bool:
     var info = mask_node.GetCurrentMask()
     return info.get("type", 2) == 0
 
+
+## 潜行面具时敌人看不见
+func is_visible_to_enemies() -> bool:
+    var mask_node = get_node_or_null("Mask")
+    if not mask_node or not mask_node.has_method("GetCurrentMask"):
+        return true
+    var info = mask_node.GetCurrentMask()
+    return info.get("type", 2) != 1
+
+
 func on_timeout_take_poision_damage(timer):
     if not is_in_poision_area:
         timer.queue_free()
@@ -55,7 +69,7 @@ func on_timeout_take_poision_damage(timer):
         return
     take_damage(1, Vector2.ZERO, 0, "poision", true)
 
-func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "normal", from_poison_timer: bool = false) -> void:
+func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "normal", from_poison_timer: bool = false, attacker = null) -> void:
     if damage_type == "poision":
         if _is_wearing_gas_mask():
             return
@@ -84,6 +98,8 @@ func take_damage(dam: int, dir: Vector2, force: int, damage_type: String = "norm
         else:
             state_machine.set_state(state_machine.states.dead)
             velocity += dir * force * 2
+            if attacker and attacker.has_method("on_kill"):
+                attacker.on_kill()
 
 func set_hp(new_hp: int) -> void:
     hp = new_hp

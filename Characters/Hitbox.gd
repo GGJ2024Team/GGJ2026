@@ -36,7 +36,14 @@ func _on_body_exited(_body: KinematicBody2D) -> void:
     
     
 func _collide(body: KinematicBody2D) -> void:
-    if body == null or not body.has_method("take_damage"):
-        queue_free()
-    else:
-        body.take_damage(damage, knockback_direction, knockback_force)
+	if body == null or not body.has_method("take_damage"):
+		queue_free()
+		return
+	var node = self
+	for _i in range(4):
+		node = node.get_parent() if node else null
+	var attacker = node
+	var actual_dam = damage
+	if attacker and attacker.get("damage_multiplier") != null:
+		actual_dam = int(damage * attacker.damage_multiplier)
+	body.take_damage(actual_dam, knockback_direction, knockback_force, "normal", false, attacker)

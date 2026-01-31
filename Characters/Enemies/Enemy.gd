@@ -24,12 +24,16 @@ func chase() -> void:
 
 
 func _on_PathTimer_timeout() -> void:
-    if is_instance_valid(player):
-        _get_path_to_player()
-    else:
+    if not is_instance_valid(player):
         path_timer.stop()
         path = []
         mov_direction = Vector2.ZERO
+        return
+    if player.has_method("is_visible_to_enemies") and not player.is_visible_to_enemies():
+        path = []
+        mov_direction = Vector2.ZERO
+        return
+    _get_path_to_player()
         
         
 func _get_path_to_player() -> void:
