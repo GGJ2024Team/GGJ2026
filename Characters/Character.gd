@@ -48,7 +48,7 @@ func _is_wearing_gas_mask() -> bool:
     if not mask_node or not mask_node.has_method("GetCurrentMask"):
         return false
     var info = mask_node.GetCurrentMask()
-    return info.get("type", 2) == 0
+    return info.get("type", 0) == 1
 
 
 ## 潜行面具时敌人看不见
@@ -57,7 +57,7 @@ func is_visible_to_enemies() -> bool:
     if not mask_node or not mask_node.has_method("GetCurrentMask"):
         return true
     var info = mask_node.GetCurrentMask()
-    return info.get("type", 2) != 1
+    return info.get("type", 0) != 2
 
 
 func on_timeout_take_poision_damage(timer):

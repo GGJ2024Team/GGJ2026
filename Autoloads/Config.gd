@@ -47,7 +47,7 @@ const MASK_CONFIG: Dictionary = {
     }
 }
 
-const MASK_TYPE_NORMAL: int = 2
+const MASK_TYPE_NORMAL: int = 0
 const MASK_TYPE_POWER: int = 3
 const POWER_MASK_TRIGGER_SWITCH: int = 10
 

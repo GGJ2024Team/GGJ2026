@@ -34,7 +34,7 @@ func _update_mask_oscillate(_delta: float) -> void:
 func _is_wearing_stealth_mask() -> bool:
     if not curmask or not curmask.has_method("GetCurrentMask"):
         return false
-    return curmask.GetCurrentMask().get("type", 2) == 1
+    return curmask.GetCurrentMask().get("type", 0) == 2
 
 
 func on_kill() -> void:
