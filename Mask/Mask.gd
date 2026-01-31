@@ -93,12 +93,13 @@ func _on_mask_switched(p_new_type: int) -> void:
     var stream = _audio_player.stream
     var dur: float = stream.get_length() if stream else 0.5
     var half = dur * 0.5
+    _audio_player.stream.loop = false
     _audio_player.play()
-    var tween = create_tween()
-    tween.tween_property(_mask_sprite, "modulate:a", 0.0, half)
-    tween.tween_callback(self._on_tween_mid)
-    tween.tween_property(_mask_sprite, "modulate:a", 1.0, half)
-    tween.tween_callback(self._on_tween_end)
+    # var tween = create_tween()
+    # tween.tween_property(_mask_sprite, "modulate:a", 0.0, half)
+    # tween.tween_callback(self._on_tween_mid)
+    # tween.tween_property(_mask_sprite, "modulate:a", 1.0, half)
+    # tween.tween_callback(self._on_tween_end)
 
 
 func _on_tween_mid() -> void:
