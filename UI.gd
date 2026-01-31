@@ -21,7 +21,7 @@ func _ready() -> void:
     _duration_timer.connect("timeout", self, "_update_countdown")
     _duration_timer.wait_time = 1.0
     _duration_timer.start()
-    update_mask_info(p_type, get_node("/root/Config").GetMaskConfig(p_type).duration)
+    update_mask_info(mask._next_type, get_node("/root/Config").GetMaskConfig(mask._next_type).duration)
 
 func _update_health_bar(new_value: int) -> void:
     var __ = health_bar_tween.interpolate_property(health_bar, "value",

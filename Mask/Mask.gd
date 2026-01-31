@@ -38,6 +38,7 @@ func _ready() -> void:
     _pick_next_mask()
     _start_duration_timer()
     _apply_mask_effect_to_player()
+    _switch_to_next_mask()
 
 
 func _start_duration_timer() -> void:
@@ -119,7 +120,7 @@ func _on_mask_switched(p_new_type: int) -> void:
     _mask_sprite.visible = true
     _audio_player.stream.loop = false
     _audio_player.play()
-    emit_signal("mask_changed", p_new_type)
+    emit_signal("mask_changed", _next_type)
 
 
 func _on_tween_mid() -> void:
@@ -181,5 +182,3 @@ func OnPlayerKill() -> void:
 func ApplyMaskSkill(_delta: float) -> void:
     pass
 
-func set_mask(new_mask: String) -> void:
-    emit_signal("mask_change", new_mask)
